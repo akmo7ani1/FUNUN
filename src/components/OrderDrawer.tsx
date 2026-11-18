@@ -69,19 +69,19 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
     <div className="fixed inset-0 z-50 flex justify-end">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      {/* Drawer Content */}
-      <aside className="relative z-10 w-full max-w-xl bg-[var(--bg-surface)] text-[var(--text-primary)] h-full flex flex-col border-s border-[var(--border-subtle)] shadow-2xl">
+      {/* Drawer Content using 100dvh for accurate mobile browser viewport */}
+      <aside className="relative z-10 w-full max-w-xl bg-[var(--bg-surface)] text-[var(--text-primary)] h-[100dvh] flex flex-col border-s border-[var(--border-subtle)] shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between gap-4 px-6 py-5 border-b border-[var(--border-muted)] bg-[var(--bg-primary)]">
-          <div>
-            <h2 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">
+        <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-[var(--border-muted)] bg-[var(--bg-primary)] shrink-0">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-xl font-bold text-[var(--text-primary)] truncate">
               {t.title}
             </h2>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5 line-clamp-1">
               {t.subtitle}
             </p>
           </div>
@@ -89,23 +89,23 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close drawer"
-            className="p-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Scrollable Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
           {cart.length === 0 ? (
-            <div className="py-16 text-center space-y-4">
+            <div className="py-14 text-center space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] flex items-center justify-center mx-auto text-[#F59C3B]">
                 <ShoppingBag className="w-7 h-7" />
               </div>
               <h3 className="text-lg font-bold text-[var(--text-primary)]">
                 {t.emptyTitle}
               </h3>
-              <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
+              <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto px-4">
                 {t.emptyDesc}
               </p>
               <button
@@ -114,7 +114,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                   onClose();
                   onNavigateToServices();
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-gradient text-[#0B1619] font-semibold text-sm cursor-pointer"
+                className="inline-flex items-center justify-center min-h-[44px] gap-2 px-5 py-2.5 rounded-lg bg-brand-gradient text-[#0B1619] font-semibold text-sm cursor-pointer"
               >
                 <span>{t.browseServicesBtn}</span>
               </button>
@@ -130,13 +130,13 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                   <button
                     type="button"
                     onClick={onClearCart}
-                    className="text-xs text-[#CA5628] hover:underline cursor-pointer"
+                    className="text-xs text-[#CA5628] hover:underline cursor-pointer py-1 px-2"
                   >
                     {t.clearAll}
                   </button>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {cart.map((item, idx) => {
                     const service = SERVICES_DATA.find(
                       (s) => s.id === item.serviceId
@@ -152,10 +152,10 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                     return (
                       <div
                         key={item.cartItemId}
-                        className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-muted)] space-y-2.5"
+                        className="p-3.5 sm:p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-muted)] space-y-2"
                       >
-                        <div className="flex items-start justify-between gap-3">
-                          <h4 className="text-sm font-bold text-[var(--text-primary)]">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="text-sm font-bold text-[var(--text-primary)] leading-snug">
                             <span className="font-mono tabular-nums text-[#F59C3B]">
                               {idx + 1}.
                             </span>{' '}
@@ -165,7 +165,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                             type="button"
                             onClick={() => onRemoveItem(item.cartItemId)}
                             title={t.removeItem}
-                            className="text-[var(--text-secondary)] hover:text-red-400 transition-colors cursor-pointer p-1"
+                            className="w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:text-red-400 transition-colors cursor-pointer shrink-0"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -203,7 +203,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                                 Math.max(1, item.quantity - 1)
                               )
                             }
-                            className="p-1.5 rounded-md bg-[var(--bg-surface)] text-[var(--text-primary)] hover:border-[var(--border-subtle)] border border-transparent cursor-pointer"
+                            className="w-8 h-8 flex items-center justify-center rounded-md bg-[var(--bg-surface)] text-[var(--text-primary)] hover:border-[var(--border-subtle)] border border-transparent cursor-pointer"
                           >
                             <Minus className="w-3.5 h-3.5" />
                           </button>
@@ -215,7 +215,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                             onClick={() =>
                               onUpdateQty(item.cartItemId, item.quantity + 1)
                             }
-                            className="p-1.5 rounded-md bg-[var(--bg-surface)] text-[var(--text-primary)] hover:border-[var(--border-subtle)] border border-transparent cursor-pointer"
+                            className="w-8 h-8 flex items-center justify-center rounded-md bg-[var(--bg-surface)] text-[var(--text-primary)] hover:border-[var(--border-subtle)] border border-transparent cursor-pointer"
                           >
                             <Plus className="w-3.5 h-3.5" />
                           </button>
@@ -226,13 +226,13 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                 </div>
               </div>
 
-              {/* Client Details & Confirmed Phase 1 Enhancements (Urgency + Design Link) */}
-              <div className="space-y-4 pt-2 border-t border-[var(--border-muted)]">
+              {/* Client Details & Confirmed Phase 1 Enhancements */}
+              <div className="space-y-3.5 pt-3 border-t border-[var(--border-muted)]">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   {t.clientSectionHeading}
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                       {t.clientNameLabel}
@@ -244,7 +244,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                         onUpdateClientInfo({ clientName: e.target.value })
                       }
                       placeholder={t.clientNamePlaceholder}
-                      className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none"
+                      className="w-full min-h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                     />
                   </div>
 
@@ -260,12 +260,12 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                         onUpdateClientInfo({ phone: e.target.value })
                       }
                       placeholder={t.phonePlaceholder}
-                      className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none"
+                      className="w-full min-h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                       {t.districtLabel}
@@ -277,7 +277,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                         onUpdateClientInfo({ district: e.target.value })
                       }
                       placeholder={t.districtPlaceholder}
-                      className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none"
+                      className="w-full min-h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                     />
                   </div>
 
@@ -292,7 +292,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                           urgency: e.target.value as OrderUrgency,
                         })
                       }
-                      className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none"
+                      className="w-full min-h-[44px] truncate rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                     >
                       <option value="standard">
                         {t.urgencyOptions.standard}
@@ -319,7 +319,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                       onUpdateClientInfo({ designLink: e.target.value })
                     }
                     placeholder={t.designLinkPlaceholder}
-                    className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none"
+                    className="w-full min-h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                   />
                 </div>
 
@@ -334,21 +334,21 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                       onUpdateClientInfo({ additionalNotes: e.target.value })
                     }
                     placeholder={t.additionalNotesPlaceholder}
-                    className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none resize-none"
+                    className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-base sm:text-sm text-[var(--text-primary)] outline-none resize-none"
                   />
                 </div>
               </div>
 
               {/* Live Message Preview */}
-              <div className="space-y-2 pt-2 border-t border-[var(--border-muted)]">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[var(--text-secondary)]">
+              <div className="space-y-2 pt-3 border-t border-[var(--border-muted)]">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-[var(--text-secondary)] truncate">
                     {t.livePreviewHeading}
                   </span>
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-[#F59C3B] hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-[#F59C3B] hover:underline cursor-pointer shrink-0 py-1"
                   >
                     {copied ? (
                       <>
@@ -363,7 +363,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                     )}
                   </button>
                 </div>
-                <pre className="p-3.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-muted)] text-xs text-[var(--text-secondary)] whitespace-pre-wrap leading-relaxed font-sans max-h-48 overflow-y-auto">
+                <pre className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-muted)] text-xs text-[var(--text-secondary)] whitespace-pre-wrap leading-relaxed font-sans max-h-40 overflow-y-auto">
                   {formattedMessage}
                 </pre>
               </div>
@@ -373,12 +373,12 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
 
         {/* Footer CTA */}
         {cart.length > 0 && (
-          <div className="p-5 border-t border-[var(--border-muted)] bg-[var(--bg-primary)]">
+          <div className="p-4 sm:p-5 border-t border-[var(--border-muted)] bg-[var(--bg-primary)] shrink-0">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-base shadow-lg hover:opacity-95 transition-opacity"
+              className="w-full min-h-[48px] flex items-center justify-center gap-2.5 py-3 px-5 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity"
             >
               <MessageCircle className="w-5 h-5 shrink-0" />
               <span>{t.sendViaWhatsApp}</span>

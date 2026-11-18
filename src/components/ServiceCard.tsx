@@ -65,7 +65,10 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
       className="flex flex-col rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] hover:border-[var(--border-subtle)] transition-colors duration-200 overflow-hidden shadow-brand-card"
     >
       {/* Image Header with Lightbox Zoom Trigger */}
-      <div className="relative aspect-[16/10] w-full group overflow-hidden bg-[var(--bg-elevated)]">
+      <div
+        onClick={() => onOpenLightbox(service)}
+        className="relative aspect-[16/10] w-full group overflow-hidden bg-[var(--bg-elevated)] cursor-pointer"
+      >
         <ResilientImage
           driveFileId={service.driveFileId}
           primaryUrl={service.imageUrl}
@@ -77,15 +80,15 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         />
 
         {/* Measured Gradient Scrim at bottom for clean contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
         {/* Editorial Numbering & Materials Line (Zero-Pill Unboxed Metadata) */}
-        <div className="absolute bottom-3 inset-x-4 flex items-center justify-between gap-2 text-xs text-[#FAF6F0]/90 pointer-events-none">
-          <span className="font-mono tabular-nums font-semibold text-[#F59C3B]">
+        <div className="absolute bottom-2.5 inset-x-3.5 flex items-center justify-between gap-2 text-xs text-[#FAF6F0]/95 pointer-events-none">
+          <span className="font-mono tabular-nums font-semibold text-[#F59C3B] truncate">
             {service.number}. {service.shortTitle[lang]}
           </span>
           {inCartCount > 0 && (
-            <span className="font-mono tabular-nums text-[#F59C3B] font-semibold">
+            <span className="font-mono tabular-nums text-[#F59C3B] font-semibold shrink-0">
               {t.inCartCount} {inCartCount}
             </span>
           )}
@@ -94,25 +97,28 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         {/* Zoom / Lightbox Button */}
         <button
           type="button"
-          onClick={() => onOpenLightbox(service)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenLightbox(service);
+          }}
           title={t.zoomImage}
           aria-label={t.zoomImage}
-          className="absolute top-3 end-3 p-2.5 rounded-lg bg-[#0B1619]/80 hover:bg-[#CA5628] text-[#FAF6F0] border border-[#FAF6F0]/15 transition-colors duration-150 cursor-pointer"
+          className="absolute top-2.5 end-2.5 p-2.5 rounded-lg bg-[#0B1619]/85 hover:bg-[#CA5628] text-[#FAF6F0] border border-[#FAF6F0]/15 transition-colors duration-150 cursor-pointer"
         >
           <Maximize2 className="w-4 h-4" />
         </button>
       </div>
 
       {/* Card Content & Interactive Configurator */}
-      <div className="flex flex-col flex-1 p-5 sm:p-6 gap-4">
+      <div className="flex flex-col flex-1 p-4 sm:p-6 gap-3.5 sm:gap-4">
         <div>
-          <p className="text-xs text-[var(--text-secondary)] mb-1.5">
+          <p className="text-[11px] sm:text-xs text-[var(--text-secondary)] mb-1 leading-snug">
             {service.materialsTag[lang]}
           </p>
-          <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] leading-snug mb-2">
+          <h3 className="text-base sm:text-xl font-bold text-[var(--text-primary)] leading-snug mb-1.5">
             {service.number}. {service.title[lang]}
           </h3>
-          <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
             {service.description[lang]}
           </p>
         </div>
@@ -121,16 +127,16 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         <div className="h-px w-full bg-[var(--border-muted)]" />
 
         {/* Configuration Form */}
-        <div className="space-y-3.5 mt-auto">
+        <div className="space-y-3 mt-auto">
           {/* Option Dropdown 1 */}
           <div>
-            <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+            <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
               {t.optionLabel}
             </label>
             <select
               value={optionIndex}
               onChange={(e) => setOptionIndex(Number(e.target.value))}
-              className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] outline-none transition-colors"
+              className="w-full max-w-full truncate rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2.5 text-base sm:text-sm text-[var(--text-primary)] outline-none transition-colors min-h-[44px]"
             >
               {service.options.map((opt, idx) => (
                 <option key={idx} value={idx}>
@@ -142,13 +148,13 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
           {/* Spec Dropdown 2 */}
           <div>
-            <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+            <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
               {t.specLabel}
             </label>
             <select
               value={specIndex}
               onChange={(e) => setSpecIndex(Number(e.target.value))}
-              className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] outline-none transition-colors"
+              className="w-full max-w-full truncate rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2.5 text-base sm:text-sm text-[var(--text-primary)] outline-none transition-colors min-h-[44px]"
             >
               {service.specs.map((spec, idx) => (
                 <option key={idx} value={idx}>
@@ -159,16 +165,16 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
           </div>
 
           {/* Quantity Stepper & Optional Item Note */}
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-            <div className="sm:col-span-5">
-              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+          <div className="grid grid-cols-12 gap-2.5 sm:gap-3">
+            <div className="col-span-5">
+              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1 truncate">
                 {t.qtyLabel}
               </label>
-              <div className="flex items-center justify-between rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] px-2 py-1.5">
+              <div className="flex items-center justify-between rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] px-1.5 h-[44px]">
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-1.5 rounded-md hover:bg-[var(--bg-surface)] text-[var(--text-primary)] transition-colors cursor-pointer"
+                  className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-surface)] text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-3.5 h-3.5" />
@@ -181,12 +187,12 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
                   onChange={(e) =>
                     setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
                   }
-                  className="w-12 text-center bg-transparent text-sm font-semibold tabular-nums text-[var(--text-primary)] outline-none"
+                  className="w-10 text-center bg-transparent text-base sm:text-sm font-semibold tabular-nums text-[var(--text-primary)] outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => q + 1)}
-                  className="p-1.5 rounded-md hover:bg-[var(--bg-surface)] text-[var(--text-primary)] transition-colors cursor-pointer"
+                  className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-surface)] text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-3.5 h-3.5" />
@@ -194,8 +200,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
               </div>
             </div>
 
-            <div className="sm:col-span-7">
-              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+            <div className="col-span-7">
+              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1 truncate">
                 {t.noteLabel}
               </label>
               <input
@@ -203,17 +209,17 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
                 value={itemNote}
                 onChange={(e) => setItemNote(e.target.value)}
                 placeholder={t.notePlaceholder}
-                className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/60 outline-none transition-colors"
+                className="w-full h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3 text-base sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/60 outline-none transition-colors"
               />
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch gap-2.5">
+          <div className="pt-1.5 flex flex-col sm:flex-row items-stretch gap-2">
             <button
               type="button"
               onClick={handleAdd}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`flex-1 min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-150 cursor-pointer ${
                 justAdded
                   ? 'bg-emerald-600 text-white'
                   : 'bg-brand-gradient text-[#0B1619] hover:opacity-95'
@@ -222,12 +228,12 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
               {justAdded ? (
                 <>
                   <Check className="w-4 h-4 shrink-0" />
-                  <span>{t.addedToOrder}</span>
+                  <span className="truncate">{t.addedToOrder}</span>
                 </>
               ) : (
                 <>
                   <ShoppingBag className="w-4 h-4 shrink-0" />
-                  <span>{t.addToOrder}</span>
+                  <span className="truncate">{t.addToOrder}</span>
                 </>
               )}
             </button>
@@ -236,7 +242,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
               href={instantWhatsAppUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] text-xs font-semibold transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[44px] flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] text-xs font-semibold transition-colors shrink-0"
             >
               <MessageCircle className="w-4 h-4 text-[#F59C3B] shrink-0" />
               <span>{t.instantWhatsApp}</span>

@@ -6,7 +6,7 @@ html[data-theme="dark"] {
   --bg-primary: #0B1619;
   --bg-surface: #122227;
   --bg-elevated: #192E35;
-  --bg-glass: rgba(11, 22, 25, 0.88);
+  --bg-glass: rgba(11, 22, 25, 0.90);
   --text-primary: #FAF6F0;
   --text-secondary: #C2D1D4;
   --brand-terracotta: #CA5628;
@@ -22,7 +22,7 @@ html[data-theme="light"] {
   --bg-primary: #FAF6F0;
   --bg-surface: #FFFFFF;
   --bg-elevated: #F2EBE1;
-  --bg-glass: rgba(250, 246, 240, 0.92);
+  --bg-glass: rgba(250, 246, 240, 0.94);
   --text-primary: #121E21;
   --text-secondary: #43575B;
   --brand-terracotta: #CA5628;
@@ -38,6 +38,8 @@ html {
   scroll-behavior: smooth;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 html[lang="ar"] body {
@@ -67,6 +69,7 @@ body {
   color: var(--text-primary);
   transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-x: hidden;
+  width: 100%;
 }
 
 .bg-brand-gradient {
@@ -75,4 +78,13 @@ body {
 
 .shadow-brand-card {
   box-shadow: var(--shadow-card);
+}
+
+/* Hide scrollbars on horizontal filter bars while preserving touch scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

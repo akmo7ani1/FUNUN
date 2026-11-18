@@ -47,7 +47,7 @@ const STORAGE_KEYS = {
 };
 
 export default function App() {
-  // 1. Language state (Default: 'ar' per Phase 1 user confirmation)
+  // 1. Language state (Default: 'ar')
   const [lang, setLang] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.LANG);
@@ -57,7 +57,7 @@ export default function App() {
     }
   });
 
-  // 2. Theme state (Default: 'dark' per Phase 1 user confirmation)
+  // 2. Theme state (Default: 'dark')
   const [theme, setTheme] = useState<ThemeMode>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.THEME);
@@ -309,21 +309,21 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[#F59C3B] selection:text-[#0B1619]">
+    <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[#F59C3B] selection:text-[#0B1619]">
       {/* =====================================================================
-          SECTION 1: STICKY RESPONSIVE HEADER
+          SECTION 1: STICKY RESPONSIVE HEADER (Mobile-first h-16, Desktop h-20)
       ===================================================================== */}
       <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-glass)] border-b border-[var(--border-muted)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-6">
           {/* Zone 1: Official PNG Logo + Brand Wordmark */}
           <a
             href="#home"
-            className="flex items-center gap-3 shrink-0 focus:outline-none"
+            className="flex items-center shrink-0 min-w-0 focus:outline-none"
           >
             <BrandLogo theme={theme} lang={lang} size="md" showText={true} />
           </a>
 
-          {/* Zone 2: Clean Single-Line Navigation Links */}
+          {/* Zone 2: Clean Single-Line Navigation Links (Desktop) */}
           <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-[var(--text-secondary)]">
             <a
               href="#home"
@@ -358,15 +358,15 @@ export default function App() {
           </nav>
 
           {/* Zone 3: Language Switcher, Theme Toggle & Smart Order Cart Trigger */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* Bilingual Toggle (AR | EN) */}
             <button
               type="button"
               onClick={() => setLang((prev) => (prev === 'ar' ? 'en' : 'ar'))}
               title={t.controls.switchLangTitle}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] hover:border-[var(--border-subtle)] border border-[var(--border-muted)] text-xs font-bold text-[var(--text-primary)] transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="h-10 px-2.5 sm:px-3 inline-flex items-center justify-center gap-1.5 rounded-lg bg-[var(--bg-elevated)] hover:border-[var(--border-subtle)] border border-[var(--border-muted)] text-xs font-bold text-[var(--text-primary)] transition-colors cursor-pointer whitespace-nowrap shrink-0"
             >
-              <Globe className="w-3.5 h-3.5 text-[#F59C3B]" />
+              <Globe className="w-3.5 h-3.5 text-[#F59C3B] shrink-0" />
               <span>{t.controls.switchLang}</span>
             </button>
 
@@ -382,7 +382,7 @@ export default function App() {
               aria-label={
                 theme === 'dark' ? t.controls.lightMode : t.controls.darkMode
               }
-              className="p-2 rounded-lg bg-[var(--bg-elevated)] hover:border-[var(--border-subtle)] border border-[var(--border-muted)] text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-[var(--bg-elevated)] hover:border-[var(--border-subtle)] border border-[var(--border-muted)] text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
             >
               {theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-[#F59C3B]" />
@@ -395,7 +395,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsDrawerOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-gradient text-[#0B1619] text-xs sm:text-sm font-bold shadow-sm hover:opacity-95 transition-opacity cursor-pointer whitespace-nowrap shrink-0"
+              className="h-10 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 rounded-lg bg-brand-gradient text-[#0B1619] text-xs sm:text-sm font-bold shadow-sm hover:opacity-95 transition-opacity cursor-pointer whitespace-nowrap shrink-0"
             >
               <ShoppingBag className="w-4 h-4 shrink-0" />
               <span>{t.nav.myOrder}</span>
@@ -409,7 +409,7 @@ export default function App() {
               type="button"
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-label="Toggle Menu"
-              className="lg:hidden p-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] text-[var(--text-primary)] cursor-pointer"
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] text-[var(--text-primary)] cursor-pointer shrink-0"
             >
               {mobileMenuOpen ? (
                 <X className="w-5 h-5" />
@@ -422,39 +422,42 @@ export default function App() {
 
         {/* Mobile Dropdown Navigation */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-4 space-y-2">
+          <div className="lg:hidden border-t border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-3 space-y-1 shadow-xl">
+            <div className="pb-2 mb-2 border-b border-[var(--border-muted)] text-xs font-bold text-[#F59C3B]">
+              {t.brandName}
+            </div>
             <button
               type="button"
               onClick={() => scrollToSection('home')}
-              className="block w-full text-start px-3 py-2 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
+              className="block w-full text-start px-3 py-2.5 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
             >
               {t.nav.home}
             </button>
             <button
               type="button"
               onClick={() => scrollToSection('profile')}
-              className="block w-full text-start px-3 py-2 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
+              className="block w-full text-start px-3 py-2.5 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
             >
               {t.nav.profile}
             </button>
             <button
               type="button"
               onClick={() => scrollToSection('services')}
-              className="block w-full text-start px-3 py-2 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
+              className="block w-full text-start px-3 py-2.5 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
             >
               {t.nav.services}
             </button>
             <button
               type="button"
               onClick={() => scrollToSection('portfolio')}
-              className="block w-full text-start px-3 py-2 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
+              className="block w-full text-start px-3 py-2.5 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
             >
               {t.nav.portfolio}
             </button>
             <button
               type="button"
               onClick={() => scrollToSection('contact')}
-              className="block w-full text-start px-3 py-2 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
+              className="block w-full text-start px-3 py-2.5 rounded-lg hover:bg-[var(--bg-elevated)] text-sm font-medium"
             >
               {t.nav.contact}
             </button>
@@ -467,45 +470,45 @@ export default function App() {
       ===================================================================== */}
       <section
         id="home"
-        className="relative pt-10 pb-16 sm:pt-16 sm:pb-24 border-b border-[var(--border-muted)] overflow-hidden"
+        className="relative pt-6 pb-12 sm:pt-14 sm:pb-20 border-b border-[var(--border-muted)] overflow-hidden"
       >
         {/* Subtle Architectural Golden Feather Curve Background Motif */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-40 -end-40 w-[520px] h-[520px] rounded-full opacity-15 blur-3xl"
+          className="pointer-events-none absolute -top-40 -end-40 w-[340px] sm:w-[520px] h-[340px] sm:h-[520px] rounded-full opacity-15 blur-3xl"
           style={{
             background:
               'radial-gradient(circle, #F59C3B 0%, #CA5628 50%, transparent 75%)',
           }}
         />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           {/* 2-Column Split with items-stretch */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-stretch">
             {/* Hero Text & Primary CTA Column */}
-            <div className="lg:col-span-6 flex flex-col justify-center space-y-6">
-              <p className="text-xs sm:text-sm font-medium text-[#F59C3B] tracking-wide">
+            <div className="lg:col-span-6 flex flex-col justify-center space-y-4 sm:space-y-6">
+              <p className="text-xs sm:text-sm font-medium text-[#F59C3B] leading-relaxed">
                 {t.hero.kicker}
               </p>
 
               <h1
-                className="font-display font-bold text-[var(--text-primary)] leading-[1.2] tracking-tight"
+                className="font-display font-bold text-[var(--text-primary)] leading-[1.25] tracking-tight"
                 style={{
-                  fontSize: 'clamp(1.95rem, 3.6vw, 3.25rem)',
+                  fontSize: 'clamp(1.55rem, 3.8vw, 3.15rem)',
                   textWrap: 'balance',
                 }}
               >
                 {t.hero.headline}
               </h1>
 
-              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl">
                 {t.hero.subheadline}
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center gap-3.5">
+              <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <a
                   href="#services"
-                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity whitespace-nowrap shrink-0"
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 px-5 sm:px-6 py-3 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity text-center"
                 >
                   <MessageCircle className="w-5 h-5 shrink-0" />
                   <span>{t.hero.primaryCta}</span>
@@ -513,7 +516,7 @@ export default function App() {
 
                 <a
                   href="#profile"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-semibold text-sm sm:text-base transition-colors whitespace-nowrap shrink-0"
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-semibold text-sm sm:text-base transition-colors text-center"
                 >
                   <span>{t.hero.secondaryCta}</span>
                 </a>
@@ -522,7 +525,10 @@ export default function App() {
 
             {/* Headquarters & Commercial Signage Visual Showcase (01) */}
             <div className="lg:col-span-6 flex flex-col">
-              <div className="relative flex-1 rounded-2xl overflow-hidden border border-[var(--border-subtle)] shadow-brand-card bg-[var(--bg-surface)] min-h-[290px] sm:min-h-[380px] group">
+              <div
+                onClick={() => setLightboxService(heroService)}
+                className="relative flex-1 rounded-2xl overflow-hidden border border-[var(--border-subtle)] shadow-brand-card bg-[var(--bg-surface)] aspect-[16/10] sm:aspect-auto sm:min-h-[360px] group cursor-pointer"
+              >
                 <ResilientImage
                   driveFileId={heroService.driveFileId}
                   primaryUrl={heroService.imageUrl}
@@ -534,43 +540,46 @@ export default function App() {
                 />
 
                 {/* Measured Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
 
                 {/* Enlarge HQ Button */}
                 <button
                   type="button"
-                  onClick={() => setLightboxService(heroService)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxService(heroService);
+                  }}
                   title={t.hero.zoomHqBtn}
-                  className="absolute top-4 end-4 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#0B1619]/85 hover:bg-[#CA5628] text-[#FAF6F0] text-xs font-semibold border border-[#FAF6F0]/15 transition-colors cursor-pointer"
+                  className="absolute top-3 end-3 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#0B1619]/85 hover:bg-[#CA5628] text-[#FAF6F0] text-xs font-semibold border border-[#FAF6F0]/15 transition-colors cursor-pointer"
                 >
                   <Maximize2 className="w-3.5 h-3.5" />
-                  <span>{t.hero.zoomHqBtn}</span>
+                  <span className="hidden sm:inline">{t.hero.zoomHqBtn}</span>
                 </button>
 
                 {/* Bottom Caption */}
-                <div className="absolute bottom-4 inset-x-5 flex items-center justify-between gap-4 text-xs text-[#FAF6F0]/90 pointer-events-none">
+                <div className="absolute bottom-3 inset-x-4 text-[11px] sm:text-xs text-[#FAF6F0]/95 pointer-events-none leading-snug">
                   <span>{t.hero.imageCaption}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Full-Width 4-Column Quantitative Proof Strip Below Hero Split */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+          {/* 2x2 on Mobile / 4-Column on Desktop Quantitative Proof Strip */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-2">
             {t.hero.metrics.map((metric, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] flex flex-col justify-between gap-1.5"
+                className="p-3.5 sm:p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] flex flex-col justify-between gap-1"
               >
-                <div className="flex items-baseline gap-2">
-                  <span className="font-display font-bold text-2xl sm:text-3xl tabular-nums text-[#F59C3B]">
+                <div className="flex flex-wrap items-baseline gap-1.5">
+                  <span className="font-display font-bold text-xl sm:text-3xl tabular-nums text-[#F59C3B]">
                     {metric.value}
                   </span>
-                  <span className="text-sm font-bold text-[var(--text-primary)]">
+                  <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)]">
                     {metric.unit}
                   </span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-[var(--text-secondary)] leading-relaxed">
                   {metric.label}
                 </p>
               </div>
@@ -584,16 +593,16 @@ export default function App() {
       ===================================================================== */}
       <section
         id="profile"
-        className="py-16 sm:py-24 border-b border-[var(--border-muted)]"
+        className="py-12 sm:py-24 border-b border-[var(--border-muted)]"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-14">
           {/* Section Header */}
-          <div className="max-w-3xl space-y-3">
+          <div className="max-w-3xl space-y-2.5">
             <p className="text-xs sm:text-sm font-semibold text-[#F59C3B]">
               {t.profile.sectionKicker}
             </p>
             <h2
-              className="font-display text-2xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight"
+              className="font-display text-xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-snug"
               style={{ textWrap: 'balance' }}
             >
               {t.profile.sectionTitle}
@@ -603,12 +612,12 @@ export default function App() {
             </p>
           </div>
 
-          {/* Asymmetric Bento Grid: About Us (col-span-6) + Vision & Mission (col-span-6) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* Asymmetric Bento Grid: About Us + Vision & Mission */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
             {/* About Us Card */}
-            <div className="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex flex-col justify-between gap-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+            <div className="lg:col-span-6 p-5 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex flex-col justify-between gap-5">
+              <div className="space-y-3.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <BrandLogo
                     theme={theme}
                     lang={lang}
@@ -619,7 +628,7 @@ export default function App() {
                     {OFFICIAL_CONTACT.address[lang]}
                   </span>
                 </div>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+                <h3 className="font-display text-lg sm:text-2xl font-bold text-[var(--text-primary)]">
                   {t.profile.aboutTitle}
                 </h3>
                 <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
@@ -637,9 +646,9 @@ export default function App() {
                   href={OFFICIAL_CONTACT.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-semibold text-[#F59C3B] hover:underline"
+                  className="inline-flex items-center gap-1 font-semibold text-[#F59C3B] hover:underline py-1"
                 >
-                  <MapPin className="w-3.5 h-3.5" />
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
                   <span>
                     {lang === 'ar' ? 'موقع المقر بالرياض' : 'Riyadh HQ Map'}
                   </span>
@@ -648,9 +657,9 @@ export default function App() {
             </div>
 
             {/* Vision & Mission Stack */}
-            <div className="lg:col-span-6 grid grid-cols-1 gap-6">
+            <div className="lg:col-span-6 grid grid-cols-1 gap-5 sm:gap-6">
               {/* Vision */}
-              <div className="p-6 sm:p-7 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-muted)] space-y-2.5">
+              <div className="p-5 sm:p-7 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-muted)] space-y-2">
                 <div className="flex items-center gap-2.5 text-[#F59C3B]">
                   <Eye className="w-5 h-5 shrink-0" />
                   <h3 className="font-display text-lg sm:text-xl font-bold text-[var(--text-primary)]">
@@ -663,7 +672,7 @@ export default function App() {
               </div>
 
               {/* Mission */}
-              <div className="p-6 sm:p-7 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-muted)] space-y-2.5">
+              <div className="p-5 sm:p-7 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-muted)] space-y-2">
                 <div className="flex items-center gap-2.5 text-[#CA5628]">
                   <Target className="w-5 h-5 shrink-0" />
                   <h3 className="font-display text-lg sm:text-xl font-bold text-[var(--text-primary)]">
@@ -678,15 +687,15 @@ export default function App() {
           </div>
 
           {/* Core Values (4 Columns) */}
-          <div className="space-y-5">
-            <h3 className="font-display text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+          <div className="space-y-4">
+            <h3 className="font-display text-lg sm:text-2xl font-bold text-[var(--text-primary)]">
               {t.profile.valuesTitle}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               {t.profile.values.map((val) => (
                 <div
                   key={val.num}
-                  className="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] space-y-2"
+                  className="p-4 sm:p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] space-y-1.5"
                 >
                   <div className="flex items-center justify-between text-xs text-[var(--text-secondary)]">
                     <span className="font-mono tabular-nums font-bold text-[#F59C3B]">
@@ -706,9 +715,9 @@ export default function App() {
           </div>
 
           {/* 4-Step Execution Workflow */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-6">
+          <div className="p-5 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-5">
             <div className="space-y-1">
-              <h3 className="font-display text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+              <h3 className="font-display text-lg sm:text-2xl font-bold text-[var(--text-primary)]">
                 {t.profile.workflowTitle}
               </h3>
               <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
@@ -716,11 +725,11 @@ export default function App() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {t.profile.workflowSteps.map((wf) => (
                 <div
                   key={wf.step}
-                  className="relative p-5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-muted)] space-y-2"
+                  className="relative p-4 sm:p-5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-muted)] space-y-1.5"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono tabular-nums text-lg font-extrabold text-[#F59C3B]">
@@ -748,17 +757,17 @@ export default function App() {
       ===================================================================== */}
       <section
         id="services"
-        className="py-16 sm:py-24 border-b border-[var(--border-muted)]"
+        className="py-12 sm:py-24 border-b border-[var(--border-muted)]"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-7 sm:space-y-10">
           {/* Section Header */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="max-w-3xl space-y-3">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
+            <div className="max-w-3xl space-y-2.5">
               <p className="text-xs sm:text-sm font-semibold text-[#F59C3B]">
                 {t.services.sectionKicker}
               </p>
               <h2
-                className="font-display text-2xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight"
+                className="font-display text-xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-snug"
                 style={{ textWrap: 'balance' }}
               >
                 {t.services.sectionTitle}
@@ -777,14 +786,14 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t.services.searchPlaceholder}
-                  className="w-full rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] ps-10 pe-9 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/65 outline-none transition-colors"
+                  className="w-full min-h-[44px] rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] ps-10 pe-9 py-2.5 text-base sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/65 outline-none transition-colors"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery('')}
                     title={t.services.clearSearch}
-                    className="absolute end-3 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+                    className="absolute end-3 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer p-1"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -793,8 +802,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* Interactive Category Filter Segmented Control */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+          {/* Interactive Category Filter Segmented Control (Smooth Touch Scroll on Mobile) */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-1">
             {SERVICE_CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat.key;
               return (
@@ -802,7 +811,7 @@ export default function App() {
                   key={cat.key}
                   type="button"
                   onClick={() => setActiveCategory(cat.key)}
-                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                  className={`min-h-[42px] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-brand-gradient text-[#0B1619] shadow-sm'
                       : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-muted)]'
@@ -816,8 +825,8 @@ export default function App() {
 
           {/* 12 Service Cards Grid */}
           {filteredServices.length === 0 ? (
-            <div className="p-12 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-muted)] text-center space-y-3">
-              <p className="text-base text-[var(--text-secondary)]">
+            <div className="p-10 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-muted)] text-center space-y-3">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)]">
                 {t.services.noResults}
               </p>
               <button
@@ -826,13 +835,13 @@ export default function App() {
                   setActiveCategory('all');
                   setSearchQuery('');
                 }}
-                className="px-4 py-2 rounded-lg bg-[var(--bg-elevated)] text-xs font-semibold text-[#F59C3B] cursor-pointer"
+                className="min-h-[42px] px-4 py-2 rounded-lg bg-[var(--bg-elevated)] text-xs font-semibold text-[#F59C3B] cursor-pointer"
               >
                 {SERVICE_CATEGORIES[0].label[lang]}
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
               {filteredServices.map((service) => (
                 <ServiceCard
                   key={service.id}
@@ -849,21 +858,21 @@ export default function App() {
       </section>
 
       {/* =====================================================================
-          SECTION 5: DEDICATED INTERACTIVE PORTFOLIO SHOWCASE (CONFIRMED IN PHASE 1)
+          SECTION 5: DEDICATED INTERACTIVE PORTFOLIO SHOWCASE
       ===================================================================== */}
       <section
         id="portfolio"
-        className="py-16 sm:py-24 border-b border-[var(--border-muted)]"
+        className="py-12 sm:py-24 border-b border-[var(--border-muted)]"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-7 sm:space-y-10">
           {/* Header & Official Drive Assets Folder Link */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="max-w-3xl space-y-3">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
+            <div className="max-w-3xl space-y-2.5">
               <p className="text-xs sm:text-sm font-semibold text-[#F59C3B]">
                 {t.portfolio.sectionKicker}
               </p>
               <h2
-                className="font-display text-2xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight"
+                className="font-display text-xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-snug"
                 style={{ textWrap: 'balance' }}
               >
                 {t.portfolio.sectionTitle}
@@ -877,16 +886,16 @@ export default function App() {
               href={OFFICIAL_CONTACT.driveFolderUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-xs sm:text-sm font-semibold text-[#F59C3B] transition-colors whitespace-nowrap shrink-0 self-start lg:self-auto"
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-xs sm:text-sm font-semibold text-[#F59C3B] transition-colors shrink-0"
             >
               <FolderOpen className="w-4 h-4 shrink-0" />
-              <span>{t.portfolio.driveLinkText}</span>
+              <span className="truncate">{t.portfolio.driveLinkText}</span>
               <ExternalLink className="w-3.5 h-3.5 shrink-0" />
             </a>
           </div>
 
           {/* Portfolio Filter Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-1">
             {SERVICE_CATEGORIES.map((cat) => {
               const isActive = portfolioCategory === cat.key;
               return (
@@ -894,7 +903,7 @@ export default function App() {
                   key={cat.key}
                   type="button"
                   onClick={() => setPortfolioCategory(cat.key)}
-                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                  className={`min-h-[40px] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-muted)]'
@@ -907,7 +916,7 @@ export default function App() {
           </div>
 
           {/* Portfolio Gallery Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {filteredPortfolio.map((item) => (
               <div
                 key={`portfolio-${item.id}`}
@@ -940,9 +949,9 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="p-4 flex-1 flex flex-col justify-between gap-3">
+                <div className="p-4 flex-1 flex flex-col justify-between gap-2.5">
                   <div className="space-y-1">
-                    <p className="text-xs text-[#F59C3B] font-medium">
+                    <p className="text-[11px] sm:text-xs text-[#F59C3B] font-medium">
                       {item.materialsTag[lang]}
                     </p>
                     <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
@@ -959,15 +968,15 @@ export default function App() {
       {/* =====================================================================
           SECTION 6: CONTACT & LOCATION HUB + QUICK WHATSAPP INQUIRY FORM
       ===================================================================== */}
-      <section id="contact" className="py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section id="contact" className="py-12 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           {/* Header */}
-          <div className="max-w-3xl space-y-3">
+          <div className="max-w-3xl space-y-2.5">
             <p className="text-xs sm:text-sm font-semibold text-[#F59C3B]">
               {t.contact.sectionKicker}
             </p>
             <h2
-              className="font-display text-2xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight"
+              className="font-display text-xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-snug"
               style={{ textWrap: 'balance' }}
             >
               {t.contact.sectionTitle}
@@ -977,9 +986,9 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
             {/* Left Column: 4 Interactive Direct Contact Cards */}
-            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               {/* 1. Direct Phone & WhatsApp Card */}
               <div className="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-muted)] flex flex-col justify-between gap-4">
                 <div className="space-y-2">
@@ -1005,16 +1014,16 @@ export default function App() {
                     href={OFFICIAL_CONTACT.whatsappBaseUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-brand-gradient text-[#0B1619] text-xs font-bold"
+                    className="min-h-[42px] inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-brand-gradient text-[#0B1619] text-xs font-bold"
                   >
-                    <MessageCircle className="w-4 h-4" />
+                    <MessageCircle className="w-4 h-4 shrink-0" />
                     <span>{t.contact.whatsappAction}</span>
                   </a>
                   <a
                     href={OFFICIAL_CONTACT.telUrl}
-                    className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] text-xs font-semibold border border-[var(--border-muted)]"
+                    className="min-h-[42px] inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] text-xs font-semibold border border-[var(--border-muted)]"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#F59C3B]" />
+                    <Phone className="w-3.5 h-3.5 text-[#F59C3B] shrink-0" />
                     <span>{t.contact.callAction}</span>
                   </a>
                 </div>
@@ -1042,9 +1051,9 @@ export default function App() {
 
                 <a
                   href={OFFICIAL_CONTACT.mailtoUrl}
-                  className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] text-xs font-semibold border border-[var(--border-muted)]"
+                  className="min-h-[42px] inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] text-xs font-semibold border border-[var(--border-muted)]"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[#F59C3B]" />
+                  <Mail className="w-3.5 h-3.5 text-[#F59C3B] shrink-0" />
                   <span>{t.contact.emailAction}</span>
                 </a>
               </div>
@@ -1067,7 +1076,7 @@ export default function App() {
                   href={OFFICIAL_CONTACT.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[#F59C3B] text-xs font-bold border border-[var(--border-subtle)]"
+                  className="min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-[#F59C3B] text-xs font-bold border border-[var(--border-subtle)] text-center"
                 >
                   <Compass className="w-4 h-4 shrink-0" />
                   <span>{t.contact.mapsAction}</span>
@@ -1094,28 +1103,28 @@ export default function App() {
                     href={OFFICIAL_CONTACT.tiktokUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-between px-3.5 py-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-xs font-semibold text-[var(--text-primary)] border border-[var(--border-muted)]"
+                    className="min-h-[40px] inline-flex items-center justify-between px-3.5 py-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-xs font-semibold text-[var(--text-primary)] border border-[var(--border-muted)]"
                   >
                     <span>{t.contact.tiktokAction}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#F59C3B]" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#F59C3B] shrink-0" />
                   </a>
                   <a
                     href={OFFICIAL_CONTACT.snapchatUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-between px-3.5 py-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-xs font-semibold text-[var(--text-primary)] border border-[var(--border-muted)]"
+                    className="min-h-[40px] inline-flex items-center justify-between px-3.5 py-2 rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--border-subtle)] text-xs font-semibold text-[var(--text-primary)] border border-[var(--border-muted)]"
                   >
                     <span>{t.contact.snapchatAction}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#F59C3B]" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#F59C3B] shrink-0" />
                   </a>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Quick WhatsApp Inquiry Form */}
-            <div className="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex flex-col justify-between">
-              <div className="space-y-2 mb-6">
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+            <div className="lg:col-span-6 p-5 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex flex-col justify-between">
+              <div className="space-y-2 mb-5">
+                <h3 className="font-display text-lg sm:text-2xl font-bold text-[var(--text-primary)]">
                   {t.contact.quickFormTitle}
                 </h3>
                 <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
@@ -1123,10 +1132,10 @@ export default function App() {
                 </p>
               </div>
 
-              <form onSubmit={handleQuickInquirySubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleQuickInquirySubmit} className="space-y-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                       {t.contact.quickNameLabel}
                     </label>
                     <input
@@ -1135,11 +1144,11 @@ export default function App() {
                       value={quickName}
                       onChange={(e) => setQuickName(e.target.value)}
                       placeholder={t.contact.quickNamePlaceholder}
-                      className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] outline-none"
+                      className="w-full min-h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                    <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                       {t.contact.quickPhoneLabel}
                     </label>
                     <input
@@ -1149,19 +1158,19 @@ export default function App() {
                       value={quickPhone}
                       onChange={(e) => setQuickPhone(e.target.value)}
                       placeholder={t.contact.quickPhonePlaceholder}
-                      className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] outline-none"
+                      className="w-full min-h-[44px] rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                     {t.contact.quickTypeLabel}
                   </label>
                   <select
                     value={quickTypeIdx}
                     onChange={(e) => setQuickTypeIdx(Number(e.target.value))}
-                    className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] outline-none"
+                    className="w-full min-h-[44px] truncate rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-base sm:text-sm text-[var(--text-primary)] outline-none"
                   >
                     {t.contact.quickTypes.map((qt, i) => (
                       <option key={i} value={i}>
@@ -1172,7 +1181,7 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                     {t.contact.quickMessageLabel}
                   </label>
                   <textarea
@@ -1180,13 +1189,13 @@ export default function App() {
                     value={quickMessage}
                     onChange={(e) => setQuickMessage(e.target.value)}
                     placeholder={t.contact.quickMessagePlaceholder}
-                    className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] outline-none resize-none"
+                    className="w-full rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-muted)] focus:border-[var(--accent-primary)] px-3.5 py-2.5 text-base sm:text-sm text-[var(--text-primary)] outline-none resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-sm sm:text-base shadow-md hover:opacity-95 transition-opacity cursor-pointer"
+                  className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-sm sm:text-base shadow-md hover:opacity-95 transition-opacity cursor-pointer"
                 >
                   <Send className="w-4 h-4 shrink-0" />
                   <span>{t.contact.quickSubmitBtn}</span>
@@ -1200,7 +1209,7 @@ export default function App() {
       {/* =====================================================================
           SECTION 7: QUIET CORPORATE FOOTER
       ===================================================================== */}
-      <footer className="border-t border-[var(--border-muted)] bg-[var(--bg-surface)] py-12 pb-24">
+      <footer className="border-t border-[var(--border-muted)] bg-[var(--bg-surface)] py-10 sm:py-12 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             <div className="md:col-span-5 space-y-3">
@@ -1214,29 +1223,41 @@ export default function App() {
               <h4 className="text-sm font-bold text-[var(--text-primary)]">
                 {t.footer.quickLinksTitle}
               </h4>
-              <ul className="space-y-1.5 text-xs sm:text-sm text-[var(--text-secondary)]">
+              <ul className="space-y-2 text-xs sm:text-sm text-[var(--text-secondary)]">
                 <li>
-                  <a href="#home" className="hover:text-[#F59C3B]">
+                  <a href="#home" className="hover:text-[#F59C3B] py-0.5 block">
                     {t.nav.home}
                   </a>
                 </li>
                 <li>
-                  <a href="#profile" className="hover:text-[#F59C3B]">
+                  <a
+                    href="#profile"
+                    className="hover:text-[#F59C3B] py-0.5 block"
+                  >
                     {t.nav.profile}
                   </a>
                 </li>
                 <li>
-                  <a href="#services" className="hover:text-[#F59C3B]">
+                  <a
+                    href="#services"
+                    className="hover:text-[#F59C3B] py-0.5 block"
+                  >
                     {t.nav.services}
                   </a>
                 </li>
                 <li>
-                  <a href="#portfolio" className="hover:text-[#F59C3B]">
+                  <a
+                    href="#portfolio"
+                    className="hover:text-[#F59C3B] py-0.5 block"
+                  >
                     {t.nav.portfolio}
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="hover:text-[#F59C3B]">
+                  <a
+                    href="#contact"
+                    className="hover:text-[#F59C3B] py-0.5 block"
+                  >
                     {t.nav.contact}
                   </a>
                 </li>
@@ -1251,7 +1272,7 @@ export default function App() {
               <p dir="ltr" className="font-mono tabular-nums text-start">
                 {OFFICIAL_CONTACT.phoneDisplay} · {OFFICIAL_CONTACT.email}
               </p>
-              <div className="flex flex-wrap items-center gap-4 pt-1 text-xs font-semibold text-[#F59C3B]">
+              <div className="flex flex-wrap items-center gap-3 pt-1 text-xs font-semibold text-[#F59C3B]">
                 <a
                   href={OFFICIAL_CONTACT.googleMapsUrl}
                   target="_blank"
@@ -1282,23 +1303,23 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-[var(--border-muted)] text-center text-xs text-[var(--text-secondary)]">
+          <div className="pt-6 border-t border-[var(--border-muted)] text-center text-xs text-[var(--text-secondary)] leading-relaxed">
             {t.footer.rights}
           </div>
         </div>
       </footer>
 
       {/* =====================================================================
-          FLOATING STICKY BOTTOM ORDER BAR (Appears when Cart > 0)
+          FLOATING STICKY BOTTOM ORDER BAR (Mobile Precision)
       ===================================================================== */}
       {cart.length > 0 && (
-        <div className="fixed bottom-4 inset-x-4 z-30 max-w-3xl mx-auto">
-          <div className="px-4 sm:px-6 py-3 rounded-2xl bg-[var(--bg-surface)]/95 backdrop-blur-md border border-[#F59C3B]/50 shadow-2xl flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-brand-gradient text-[#0B1619] font-mono tabular-nums font-extrabold text-sm flex items-center justify-center">
+        <div className="fixed bottom-3 inset-x-3 sm:bottom-4 sm:inset-x-4 z-30 max-w-3xl mx-auto">
+          <div className="px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-[var(--bg-surface)]/95 backdrop-blur-md border border-[#F59C3B]/60 shadow-2xl flex items-center justify-between gap-2.5 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-brand-gradient text-[#0B1619] font-mono tabular-nums font-extrabold text-xs sm:text-sm flex items-center justify-center shrink-0">
                 {cart.length}
               </span>
-              <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)]">
+              <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] truncate">
                 {t.drawer.floatingBarItems}
               </span>
             </div>
@@ -1306,7 +1327,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsDrawerOpen(true)}
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-xs sm:text-sm shadow-md hover:opacity-95 transition-opacity cursor-pointer whitespace-nowrap"
+              className="min-h-[40px] sm:min-h-[44px] inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 rounded-xl bg-brand-gradient text-[#0B1619] font-bold text-xs sm:text-sm shadow-md hover:opacity-95 transition-opacity cursor-pointer shrink-0"
             >
               <MessageCircle className="w-4 h-4 shrink-0" />
               <span>{t.drawer.floatingBarAction}</span>
