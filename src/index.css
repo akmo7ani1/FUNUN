@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+html[data-theme="dark"] {
+  --bg-primary: #0B1619;
+  --bg-surface: #122227;
+  --bg-elevated: #192E35;
+  --bg-glass: rgba(11, 22, 25, 0.88);
+  --text-primary: #FAF6F0;
+  --text-secondary: #C2D1D4;
+  --brand-terracotta: #CA5628;
+  --brand-amber: #F59C3B;
+  --accent-primary: #F59C3B;
+  --accent-cta: linear-gradient(135deg, #F59C3B 0%, #CA5628 100%);
+  --border-subtle: rgba(245, 156, 59, 0.24);
+  --border-muted: rgba(250, 246, 240, 0.10);
+  --shadow-card: 0 20px 45px -12px rgba(0, 0, 0, 0.55);
+}
+
+html[data-theme="light"] {
+  --bg-primary: #FAF6F0;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F2EBE1;
+  --bg-glass: rgba(250, 246, 240, 0.92);
+  --text-primary: #121E21;
+  --text-secondary: #43575B;
+  --brand-terracotta: #CA5628;
+  --brand-amber: #F59C3B;
+  --accent-primary: #CA5628;
+  --accent-cta: linear-gradient(135deg, #CA5628 0%, #F59C3B 100%);
+  --border-subtle: rgba(202, 86, 40, 0.24);
+  --border-muted: rgba(18, 30, 33, 0.10);
+  --shadow-card: 0 18px 40px -14px rgba(18, 30, 33, 0.10);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html[lang="ar"] body {
+  font-family: 'Tajawal', sans-serif;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] .font-display {
+  font-family: 'El Messiri', sans-serif;
+}
+
+html[lang="en"] body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+html[lang="en"] h1,
+html[lang="en"] h2,
+html[lang="en"] h3,
+html[lang="en"] .font-display {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-x: hidden;
+}
+
+.bg-brand-gradient {
+  background-image: var(--accent-cta);
+}
+
+.shadow-brand-card {
+  box-shadow: var(--shadow-card);
+}
